@@ -48,8 +48,6 @@ public class TTT {
 		int p2Guess = Math.abs(num2 - num);
 		firstPlayer = (p1Guess < p2Guess) ? 1 : 2;
 		return firstPlayer;
-		// Finishes line started by last nextInt()
-		//kb.nextLine();
 	}
 	
 	public String getCurrentPlayerName(){
@@ -69,7 +67,7 @@ public class TTT {
 	public void userGuess(){
 		int x, y;
 		int count = 0;
-		System.out.println(getCurrentPlayerName() + ", please pick a spot. (Ex. 1,1)");
+		System.out.println(getCurrentPlayerName() + ", please pick a spot. (Ex. 2,2 is the middle square)");
 		do{
 		Scanner kb = new Scanner(System.in);
 		if(count > 0){
@@ -77,8 +75,8 @@ public class TTT {
 		}
 		String input = kb.nextLine();
 		String[] parts = input.split(",");
-		x = Integer.parseInt(parts[0]);
-		y = Integer.parseInt(parts[1]);
+		x = Integer.parseInt(parts[0]) - 1;
+		y = Integer.parseInt(parts[1]) - 1;
 		count++;
 		} while(array[x][y] != "-");
 		
@@ -117,10 +115,6 @@ public class TTT {
 			return false;
 	}
 	
-	public void gameFinished(){
-		
-	}
-	
 	public boolean checkRows(){
 		// X O X
 		// X X X
@@ -129,7 +123,7 @@ public class TTT {
 			String first = array[row][0];
 			boolean threeInRow = true;
 			if(!first.equals("-")){
-				for(int col=1; col<array[row].length; col++){
+				for(int col=1; col<array.length; col++){
 					threeInRow = threeInRow && first.equals(array[row][col]);
 				}
 			}
@@ -145,12 +139,12 @@ public class TTT {
 		// X O X
 		// X X X
 		// X O X
-		for(int col=0; col<array[0].length; col++){
+		for(int col=0; col<array.length; col++){
 			String first = array[0][col];
 			boolean threeInRow = true;
 			if(!first.equals("-")){
 				for(int row=1; row<array.length; row++){
-					threeInRow = threeInRow && first == array[row][col];		
+					threeInRow = threeInRow && first.equals(array[row][col]);		
 				}
 			}
 			else
@@ -166,7 +160,7 @@ public class TTT {
 		String first = array[0][0];
 		if(!first.equals("-")){
 			for(int i=0; i<array[0].length; i++){
-				threeInRow = threeInRow && first == array[i][i];
+				threeInRow = threeInRow && first.equals(array[i][i]);
 			}
 		}
 		else
@@ -177,16 +171,14 @@ public class TTT {
 		threeInRow = true;
 		first = array[array.length-1][0];
 		if(!first.equals("-")){
-			for(int x=array.length-1, y=0 ; x<array[0].length;y++, x--){
-				threeInRow = threeInRow && first == array[x][y];
+			for(int x=array.length-2, y=array.length-2; x>=0; y++, x--){
+				threeInRow = threeInRow && first.equals(array[x][y]);
 			}
 		}
 		else
 			threeInRow = false;
-		if(threeInRow)
-			return true;
-		else
-			return false;
+		
+		return threeInRow;
 	}
 	
 }
